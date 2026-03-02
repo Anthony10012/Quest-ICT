@@ -79,7 +79,6 @@ class MainMenu:
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if btn_play.collidepoint(event.pos):
-                        print("Action: Lancer Jeu")
                         return "GAME"
                     if btn_stats.collidepoint(event.pos):
                         print("Action: Voir Stats")
