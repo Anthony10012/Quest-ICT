@@ -53,3 +53,31 @@ def calculate_stats(data):
 
     return avgScore, avgTime
 
+
+# --- Etat de l'UI ---
+selected_tab = "history"
+def run_statistics(screen, results):
+    global selected_tab
+    running = True
+
+    back_rect = pygame.Rect(50,50,150,60)
+
+    while running:
+        mouse_pos = pygame.mouse.get_pos()
+
+        # --- Event management ---
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if back_rect.collidepoint(mouse_pos):
+                    return "BACK"
+
+                # Clicks on tabs (simulated)
+                if pygame.Rect(100, 750, 300, 60).collidepoint(mouse_pos): selected_tab = "history"
+                if pygame.Rect(450, 750, 300, 60).collidepoint(mouse_pos): selected_tab = "theme"
+                if pygame.Rect(800, 750, 300, 60).collidepoint(mouse_pos): selected_tab = "difficulty"
+
+
+
