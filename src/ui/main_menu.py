@@ -63,7 +63,7 @@ class MainMenu:
             title_surf = self.font_title.render("QUIZ ÉDUCATIF ", True, self.WHITE)
             self.screen.blit(title_surf, (self.width // 2 - title_surf.get_width() // 2, 100))
 
-            subtitle_surf = self.font_subtitle.render(" Testez vos connaissances ⚡", True, self.YELLOW)
+            subtitle_surf = self.font_subtitle.render(" Testez vos connaissances", True, self.YELLOW)
             self.screen.blit(subtitle_surf, (self.width // 2 - subtitle_surf.get_width() // 2, 200))
 
             btn_play = self.draw_button("JOUER MAINTENANT",300, self.BTN_GREEN, mouse_pos)
