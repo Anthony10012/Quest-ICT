@@ -80,4 +80,32 @@ def run_statistics(screen, results):
                 if pygame.Rect(800, 750, 300, 60).collidepoint(mouse_pos): selected_tab = "difficulty"
 
 
+        # --- Drawing ---
+        screen.fill(BG_COLOR)
 
+        # Title
+        draw_text_centered("STATISTIQUES",font_title,WHITE,(WIDTH//2,80))
+        draw_text_centered("Analyse de tes performances",font_subtitle,YELLOW,(WIDTH//2,140))
+
+        #Back button
+        is_hover = back_rect.collidepoint(mouse_pos)
+        draw_rounded_rect(screen,back_rect,(255,255,255,50)if not is_hover else (255,255,255,100),10)
+        draw_text_centered("RETOUR",font_medium,WHITE,back_rect.center)
+
+        # --- Overall Stats ---
+        avgScore, avgTime = calculate_stats(results)
+
+        #Parties
+        draw_rounded_rect(screen,pygame.Rect(50,200,350,200),BLUE_GRAD[1],20)
+        draw_text_centered("PARTIES JOUÉES", font_medium, WHITE, (225, 240))
+        draw_text_centered(str(len(results)), font_huge, WHITE, (225, 300))
+
+        # Score
+        draw_rounded_rect(screen, pygame.Rect(425, 200, 350, 200), GREEN_GRAD[1], 20)
+        draw_text_centered("SCORE MOYEN", font_medium, WHITE, (600, 240))
+        draw_text_centered(f"{avgScore:.0f}%", font_huge, WHITE, (600, 300))
+
+        # Time
+        draw_rounded_rect(screen, pygame.Rect(800, 200, 350, 200), PURPLE_GRAD[1], 20)
+        draw_text_centered("TEMPS MOYEN", font_medium, WHITE, (975, 240))
+        draw_text_centered(f"{avgTime:.1f}s", font_huge, WHITE, (975, 300))
