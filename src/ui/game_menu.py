@@ -113,7 +113,7 @@ while running:
 
     # Titres
     draw_text_centered("CHOISIS TON QUIZ", font_large, WHITE, 80)
-    draw_text_centered("⚡ Sélectionne un thème et un niveau ⚡", font_small, YELLOW, 150)
+    draw_text_centered("Sélectionne un thème et un niveau", font_small, YELLOW, 150)
 
     draw_text_centered("THÈME", font_medium, WHITE, 210)
 
