@@ -109,3 +109,34 @@ def run_statistics(screen, results):
         draw_rounded_rect(screen, pygame.Rect(800, 200, 350, 200), PURPLE_GRAD[1], 20)
         draw_text_centered("TEMPS MOYEN", font_medium, WHITE, (975, 240))
         draw_text_centered(f"{avgTime:.1f}s", font_huge, WHITE, (975, 300))
+
+        # --- Tabs (Simulation) ---
+        tab_y = 750
+        draw_rounded_rect(screen, pygame.Rect(100, tab_y, 300, 60),
+                          BLUE_GRAD[0] if selected_tab == "history" else (100, 100, 100), 10)
+        draw_text_centered("HISTORIQUE", font_medium, WHITE, (250, tab_y + 30))
+
+        draw_rounded_rect(screen, pygame.Rect(450, tab_y, 300, 60),
+                          GREEN_GRAD[0] if selected_tab == "theme" else (100, 100, 100), 10)
+        draw_text_centered("PAR THÈME", font_medium, WHITE, (600, tab_y + 30))
+
+        draw_rounded_rect(screen, pygame.Rect(800, tab_y, 300, 60),
+                          PURPLE_GRAD[0] if selected_tab == "difficulty" else (100, 100, 100), 10)
+        draw_text_centered("PAR DIFFICULTÉ", font_medium, WHITE, (950, tab_y + 30))
+
+        #--- Tabs Content ---
+        content_rect = pygame.Rect(50,830,1100,50)
+        if selected_tab == "history":
+            draw_text_centered(f"Dernière partie : {results[-1]['theme']} - {results[-1]['score']}/{results[-1]['totalQuestions']}", font_small, WHITE, content_rect.center)
+
+        elif selected_tab == "theme":
+            draw_text_centered("Stats par thème non implémentées graphiquement", font_small, WHITE, content_rect.center)
+        elif selected_tab == "difficulty":
+            draw_text_centered("Stats par difficulté non implémentées graphiquement", font_small, WHITE, content_rect.center)
+
+        pygame.display.flip()
+        clock.tick(60)
+
+# --- Boucle principale ---
+if __name__ == "__main__":
+    run_statistics(screen, results)
