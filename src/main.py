@@ -2,13 +2,14 @@ import pygame
 from ui.main_menu import MainMenu
 from ui.game_menu import run_game_menu
 from ui.score_statistics import run_statistics
-
+from ui.login_page import run_login
 def main():
 
     pygame.init()
     screen = pygame.display.set_mode((1200, 900))
     pygame.display.set_caption("QUIZ ÉDUCATIF")
 
+    run_login(screen)
     current_state = "MAIN_MENU"
     running = True
 
