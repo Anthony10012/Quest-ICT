@@ -1,6 +1,8 @@
 import pygame
 import sys
 
+from pygame_menu.utils import ShadowGenerator
+
 pygame.init()
 
 
@@ -85,6 +87,7 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_BACKSPACE:
                     username = username[:-1]
+                    error_msg = ""
                 elif event.key == pygame.K_RETURN:
                     # Pseudo validation
                     if len(username.strip()) < 3:
@@ -92,7 +95,8 @@ def main():
                     else:
                         print(f"Connexion réussie: {username}")
                         running = False
-
+                elif event.key == pygame.K_ESCAPE:
+                    pass
                 else:
                     if len(username) < 50:
                         username += event.unicode
