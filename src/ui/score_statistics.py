@@ -15,7 +15,7 @@ BLUE_GRAD = [(59, 130, 246), (37, 99, 235)]
 GREEN_GRAD = [(16, 185, 129), (5, 150, 105)]
 PURPLE_GRAD = [(168, 85, 247), (126, 34, 206)]
 
-# --- Polices ---
+# --- Fonts ---
 font_title = pygame.font.SysFont("Arial", 60, bold=True)
 font_subtitle = pygame.font.SysFont("Arial", 32)
 font_huge = pygame.font.SysFont("Arial", 70, bold=True)
@@ -28,7 +28,7 @@ results = [
 ]
 
 
-# --- Fonctions utilitaires ---
+# --- Utility functions ---
 def draw_rounded_rect(surface, rect, color, corner_radius):
     """Dessine un rectangle arrondi"""
     pygame.draw.rect(surface, color, rect, border_radius=corner_radius)
@@ -54,7 +54,7 @@ def calculate_stats(data):
     return avgScore, avgTime
 
 
-# --- Etat de l'UI ---
+# --- UI status ---
 selected_tab = "history"
 def run_statistics(screen, results):
     global selected_tab
