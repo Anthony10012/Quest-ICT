@@ -8,7 +8,7 @@ class MainMenu:
         self.screen = screen
         self.width, self.height = screen.get_size()
 
-        # Couleurs du design
+        # Design colors
         self.WHITE = (255, 255, 255)
         self.YELLOW = (253, 224, 71)
         self.BTN_GREEN = (16, 185, 129)
@@ -16,12 +16,12 @@ class MainMenu:
         self.BTN_PINK = (168, 85, 247)
         self.BTN_EXIT = (40, 40, 40)
 
-        #Chargement des polices
+        #Fonts
         self.font_title = pygame.font.SysFont('Arial', 50,bold=True)
         self.font_subtitle = pygame.font.SysFont('Arial', 30)
         self.font_btn = pygame.font.SysFont('Arial', 35,bold=True)
 
-        #Chargement du fond
+        #Loading Background
         try:
             self.bg = pygame.transform.scale(self.bg,(self.width,self.height))
         except:
@@ -32,24 +32,24 @@ class MainMenu:
         x_pos = (self.width - width) // 2
         rect = pygame.Rect(x_pos,y_pos,width,height)
 
-        # Aide IA pour le hovered
+        # AI help for hovered
         is_hovered = rect.collidepoint(mouse_pos)
         draw_rect = rect.inflate(20,10) if is_hovered else rect
         draw_color = tuple(min(c + 20, 255) for c in color) if is_hovered else color
 
-        # Dessin de l'ombre et du bouton
+        # Shadow and button design
         pygame.draw.rect(self.screen, (0, 0, 0, 100), draw_rect.move(4, 4), border_radius=15)
         pygame.draw.rect(self.screen, draw_color, draw_rect, border_radius=15)
         pygame.draw.rect(self.screen, self.WHITE, draw_rect, width=3, border_radius=15)
 
-        # Texte
+        # Text
         text_surf = self.font_btn.render(text, True, self.WHITE)
         text_rect = text_surf.get_rect(center=draw_rect.center)
         self.screen.blit(text_surf, text_rect)
 
         return rect
     def run (self):
-        """Boucle d'affichage du menu"""
+        """Main display loop"""
         running = True
         while running:
             mouse_pos = pygame.mouse.get_pos()
@@ -71,7 +71,7 @@ class MainMenu:
             btn_add = self.draw_button("AJOUTER QUESTIONS",500,self.BTN_PINK, mouse_pos)
             btn_exit = self.draw_button("QUITTER",620,self.BTN_EXIT, mouse_pos)
 
-            # Gestion des événements
+            # Event management
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
