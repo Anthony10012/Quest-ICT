@@ -17,6 +17,9 @@ WHITE = (255, 255, 255)
 YELLOW = (255, 235, 59)
 GREEN = (16, 185, 129)
 GRAY = (100, 100, 100)
+PINK = (236, 72, 153)
+PURPLE_LIGHT = (168, 85, 247)
+YELLOW_TEXT = (255, 235, 59)
 
 # Fonts
 font_title = pygame.font.SysFont("Arial", 80, bold=True)
@@ -41,6 +44,40 @@ BOX_FILL_COLOR = (255, 255, 255, 30)
 BOX_BORDER_COLOR = (255, 255, 255, 80)
 # Text color
 PLACEHOLDER_COLOR = (200, 200, 200)
+
+
+def draw_header():
+    # The User icon
+    icon_center = (WIDTH // 2, 220)
+    # Draw a thin white border.
+    pygame.draw.circle(screen, WHITE, icon_center, 42, width=3)
+    # The background of the icon
+    pygame.draw.circle(screen, PINK, icon_center, 40)
+
+    # User symbol (a small circle for the head and an arc for the shoulders)
+    # head
+    pygame.draw.circle(screen, WHITE, (icon_center[0], icon_center[1] - 10), 10, width=2)
+    # Shoulders (
+    pygame.draw.arc(screen, WHITE, (icon_center[0] - 15, icon_center[1], 30, 20), 0, 3.14, 2)
+
+    # Title
+    draw_text_centered("QUIZ ÉDUCATIF", font_title, WHITE, 100)
+    draw_text_centered("Apprends en t'amusant", font_subtitle, YELLOW, 150)
+
+    # Connexion card (Rounded rectangle)
+    card_rect = pygame.Rect(WIDTH // 4, 350, WIDTH // 2, 350)
+    pygame.draw.rect(screen, (66, 37, 112), card_rect, border_radius=20)
+
+    # Titles
+    draw_text_centered("CONNEXION", font_button, WHITE, 300)
+    draw_text_centered("Entre ton pseudo pour commencer", font_subtitle, YELLOW_TEXT, 350)
+
+    # Label with the star (Sparkle) ---
+    label_surf = font_subtitle.render("TON PSEUDO", True, WHITE)
+
+    # Positioning above the input box
+    start_x = WIDTH // 4 + 50
+    screen.blit(label_surf, (start_x + 35, 410))
 
 
 def draw_input_box():
@@ -104,18 +141,8 @@ def main():
 
             # --- Interface Design ---
 
-            #Title
-            draw_text_centered("QUIZ ÉDUCATIF", font_title, WHITE, 200)
-            draw_text_centered("Apprends en t'amusant", font_subtitle, YELLOW, 280)
-
-            #Connexion card (Rounded rectangle)
-            card_rect = pygame.Rect(WIDTH // 4, 350, WIDTH // 2, 350)
-            pygame.draw.rect(screen, (66, 37, 112), card_rect,border_radius=20)
-
-            #Label Pseudo
-            draw_text_centered("TON PSEUDO", font_subtitle,WHITE, 400)
-
-
+            #  call function
+            draw_header()
             draw_input_box()
 
             # Error message
