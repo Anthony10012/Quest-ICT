@@ -81,7 +81,7 @@ class MainMenu:
                     if btn_play.collidepoint(event.pos):
                         return "GAME"
                     if btn_stats.collidepoint(event.pos):
-                        print("Action: Voir Stats")
+                        return "STATS"
                     if btn_add.collidepoint(event.pos):
                         print("Action: Ajouter Question")
                     if btn_exit.collidepoint(event.pos):

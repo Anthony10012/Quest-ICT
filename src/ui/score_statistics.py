@@ -137,8 +137,10 @@ def run_statistics(screen, results):
         #--- Tabs Content ---
         content_rect = pygame.Rect(50,830,1100,50)
         if selected_tab == "history":
-            draw_text_centered(f"Dernière partie : {results[-1]['theme']} - {results[-1]['score']}/{results[-1]['totalQuestions']}", font_small, WHITE, content_rect.center)
-
+            if len(results) > 0:
+                draw_text_centered(f"Dernière partie : {results[-1]['theme']} - {results[-1]['score']}/{results[-1]['totalQuestions']}", font_small, WHITE, content_rect.center)
+            else:
+                msg ="Aucun historique disponible pour le moment."
         elif selected_tab == "theme":
             draw_text_centered("Stats par thème non implémentées graphiquement", font_small, WHITE, content_rect.center)
         elif selected_tab == "difficulty":
