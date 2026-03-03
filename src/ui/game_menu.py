@@ -4,16 +4,15 @@ import sys
 
 def run_game_menu(screen):
     # --- Configuration ---
-    # Récupérer la taille depuis l'écran passé en paramètre
     WIDTH, HEIGHT = screen.get_size()
     clock = pygame.time.Clock()
 
-    # Couleurs
+    # Colors
     BG_COLOR = (66, 37, 112)
     WHITE = (255, 255, 255)
     YELLOW = (253, 224, 71)
 
-    # Données des thèmes
+    # Theme data
     THEMES = [
         {"id": "animaux", "name": "ANIMAUX", "emoji": "🐾", "color": (16, 185, 129)},
         {"id": "drapeaux", "name": "DRAPEAUX", "emoji": "🏁", "color": (59, 130, 246)},
@@ -28,14 +27,14 @@ def run_game_menu(screen):
         {"id": "difficile", "name": "DIFFICILE", "color": (239, 68, 68)},
     ]
 
-    # --- Polices ---
+    # --- Fonts ---
     font_large = pygame.font.SysFont("Arial", 60, bold=True)
     font_medium = pygame.font.SysFont("Arial", 32, bold=True)
     font_small = pygame.font.SysFont("Arial", 20)
     font_button = pygame.font.SysFont("Arial", 25, bold=True)
     font_emoji = pygame.font.SysFont("Segoe UI Emoji", 50)
 
-    # --- État ---
+    # --- Status ---
     selected_theme = None
     selected_difficulty = None
 
@@ -75,7 +74,7 @@ def run_game_menu(screen):
         t_rect = t_surf.get_rect(center=(draw_rect.centerx, y_offset + 10))
         screen.blit(t_surf, t_rect)
 
-    # --- Boucle principale de la fonction ---
+    # --- Main function loop ---
     while True:
         mouse_pos = pygame.mouse.get_pos()
         for event in pygame.event.get():
@@ -84,32 +83,32 @@ def run_game_menu(screen):
                 sys.exit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                # 1. Vérifier le bouton retour
+                # Check the return button
                 back_rect = pygame.Rect(30, 30, 150, 60)
                 if back_rect.collidepoint(mouse_pos):
-                    return "MAIN_MENU"  # <--- ON RETOURNE CETTE VALEUR
+                    return "MAIN_MENU"
 
-                # 2. Check Thèmes
+                # Check Themes
                 for i, theme in enumerate(THEMES):
                     col, row = i % 3, i // 3
                     rect = pygame.Rect(150 + col * 320, 250 + row * 160, 280, 140)
                     if rect.collidepoint(mouse_pos):
                         selected_theme = theme['id']
 
-                # 3. Check Difficultés
+                # Check Difficulties
                 for i, diff in enumerate(DIFFICULTIES):
                     rect = pygame.Rect(150 + i * 320, 620, 280, 120)
                     if rect.collidepoint(mouse_pos):
                         selected_difficulty = diff['id']
 
-                # 4. Check Bouton Start
+                # Check Button Start
                 if selected_theme and selected_difficulty:
                     start_rect = pygame.Rect(WIDTH // 2 - 200, 780, 400, 80)
                     if start_rect.collidepoint(mouse_pos):
-                        # Retourne les choix effectués
+                        # Returns the choices made
                         return {"theme": selected_theme, "difficulty": selected_difficulty}
 
-        # --- Rendu ---
+        # --- Rendering ---
         screen.fill(BG_COLOR)
         draw_text_centered("CHOISIS TON QUIZ", font_large, WHITE, 80)
         draw_text_centered("Sélectionne un thème et un niveau", font_small, YELLOW, 150)
