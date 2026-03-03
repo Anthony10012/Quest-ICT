@@ -19,6 +19,7 @@ PURPLE_GRAD = [(168, 85, 247), (126, 34, 206)]
 font_title = pygame.font.SysFont("Arial", 60, bold=True)
 font_subtitle = pygame.font.SysFont("Arial", 32)
 font_huge = pygame.font.SysFont("Arial", 70, bold=True)
+font_button = pygame.font.SysFont("Arial", 25, bold=True)
 font_medium = pygame.font.SysFont("Arial", 28, bold=True)
 font_small = pygame.font.SysFont("Arial", 20)
 
@@ -52,7 +53,18 @@ def calculate_stats(data):
     avgTime = totalTime / totalGames
 
     return avgScore, avgTime
-
+def draw_back_button(mouse_pos):
+    rect = pygame.Rect(30, 30, 150, 60)
+    is_hovered = rect.collidepoint(mouse_pos)
+    color = (255, 255, 255, 50) if not is_hovered else (255, 255, 255, 100)
+    shape_surface = pygame.Surface((rect.width, rect.height), pygame.SRCALPHA)
+    pygame.draw.rect(shape_surface, color, (0, 0, rect.width, rect.height), border_radius=10)
+    pygame.draw.rect(shape_surface, WHITE, (0, 0, rect.width, rect.height), width=2, border_radius=10)
+    screen.blit(shape_surface, rect.topleft)
+    text_surface = font_button.render("← RETOUR", True, WHITE)
+    text_rect = text_surface.get_rect(center=rect.center)
+    screen.blit(text_surface, text_rect)
+    return rect
 
 # --- UI status ---
 selected_tab = "history"
@@ -83,14 +95,12 @@ def run_statistics(screen, results):
         # --- Drawing ---
         screen.fill(BG_COLOR)
 
+        # Back button
+        draw_back_button(mouse_pos)
+
         # Title
         draw_text_centered("STATISTIQUES",font_title,WHITE,(WIDTH//2,80))
         draw_text_centered("Analyse de tes performances",font_subtitle,YELLOW,(WIDTH//2,140))
-
-        #Back button
-        is_hover = back_rect.collidepoint(mouse_pos)
-        draw_rounded_rect(screen,back_rect,(255,255,255,50)if not is_hover else (255,255,255,100),10)
-        draw_text_centered("RETOUR",font_medium,WHITE,back_rect.center)
 
         # --- Overall Stats ---
         avgScore, avgTime = calculate_stats(results)
