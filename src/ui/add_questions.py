@@ -29,3 +29,21 @@ form_data = {
     "answers": ["","","",""]
 }
 active_field = None # To find out which text field is selected
+
+# --- Classes UI ---
+class Button:
+    def __init__(self, x, y, w, h, text, color, callback):
+        self.rect = pygame.Rect(x, y, w, h)
+        self.text = text
+        self.color = color
+        self.callback = callback
+
+    def draw(self, surface):
+        pygame.draw.rect(surface, self.color, self.rect, border_radius=12)
+        pygame.draw.rect(surface, WHITE, self.rect, 2, border_radius=12)
+        txt = font_ui.render(self.text, True, WHITE)
+        surface.blit(txt, (self.rect.centerx - txt.get_width()//2, self.rect.centery - txt.get_height()//2))
+
+    def check_click(self, pos):
+        if self.rect.collidepoint(pos):
+            self.callback()
