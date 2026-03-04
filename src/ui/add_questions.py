@@ -9,6 +9,7 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Ajouter une Question - Pygame Edition")
 
 # Colors
+BG_COLOR = (66, 37, 112)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 GRAY = (50, 50, 50)
@@ -87,3 +88,61 @@ inputs = [
 for i in range(4):
     row = i // 2
     column = i % 2
+
+
+# --- Main Loop ---
+running = True
+while running:
+    screen.fill(BG_COLOR)
+
+    # Title
+    title_surface = font_title.render("Ajouter une question", True, WHITE)
+    screen.blit(title_surface, (WIDTH // 2 - title_surface.get_width() // 2, 50))
+
+    # Drawing input and buttons
+    for input in inputs:
+        input.draw(screen)
+
+    for button in buttons:
+        button.draw(screen)
+
+    # Correct answer selection area (1-4)
+    instructions = font_small.render("Ajouter 4 images et coche la bonne réponses", True, YELLOW)
+    screen.blit(instructions,(100,300))
+    if form_data["correct_answer"] is not None:
+        correct_answer = font_ui.render(f"Bonne réponse : {form_data["correct_answer"] + 1}", True, GREEN)
+        screen.blit(correct_answer, (100, 330))
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            # Check focus sur inputs
+            active_field = None
+            for inp in inputs:
+                if inp.rect.collidepoint(event.pos):
+                    active_field = inp.key
+            # Check boutons
+            for btn in buttons:
+                btn.check_click(event.pos)
+
+        if event.type == pygame.KEYDOWN:
+            if active_field:
+                if event.key == pygame.K_BACKSPACE:
+                    form_data[active_field] = form_data[active_field][:-1]
+                elif event.key == pygame.K_RETURN:
+                    active_field = None
+                else:
+                    form_data[active_field] += event.unicode
+
+
+                    if event.key == pygame.K_F1: form_data["correct_answer"] = 0
+                    if event.key == pygame.K_F2: form_data["correct_answer"] = 1
+                    if event.key == pygame.K_F3: form_data["correct_answer"] = 2
+                    if event.key == pygame.K_F4: form_data["correct_answer"] = 3
+
+
+    pygame.display.flip()
+
+pygame.quit()
+sys.exit()
