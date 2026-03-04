@@ -68,3 +68,22 @@ class InputBox:
         txt = font_ui.render(value[-30:], True, WHITE) #Displays the last 30 characters
         surface.blit(txt,(self.rect.x + 10, self.rect.y + 10))
 
+# --- Logic ---
+def submit_form():
+    if not form_data["question"] or form_data["correct_answer"] is None:
+        print(" Formulaire incomplet !")
+    else:
+        print(f"Question ajoutée : {form_data['question']}")
+
+buttons = [
+    Button(WIDTH//2 - 150, 700, 300, 60, "AJOUTER", GREEN, submit_form)
+]
+inputs = [
+    InputBox(100, 200, 1000, 50, "QUESTION", "question"),
+    InputBox(100, 600, 1000, 50, "EXPLICATION", "explanation")
+]
+
+# Grid for the 4 answers
+for i in range(4):
+    row = i // 2
+    column = i % 2
