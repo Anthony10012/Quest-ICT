@@ -47,3 +47,24 @@ class Button:
     def check_click(self, pos):
         if self.rect.collidepoint(pos):
             self.callback()
+
+
+class InputBox:
+    def __init__(self, x, y, w, h, label, key):
+        self.rect = pygame.Rect(x, y, w, h)
+        self.label = label
+        self.key = key
+
+    def draw(self, surface):
+        color = YELLOW if active_field == self.key else WHITE
+        pygame.draw.rect(surface, color, self.rect, 2, border_radius=8)
+
+        #Label
+        label = font_small.render(self.label, True, WHITE)
+        surface.blit(label,(self.rect.x,self.rect.y - 25))
+
+        # Entered text
+        value = form_data[self.key] if isinstance(form_data[self.key], str) else ""
+        txt = font_ui.render(value[-30:], True, WHITE) #Displays the last 30 characters
+        surface.blit(txt,(self.rect.x + 10, self.rect.y + 10))
+
