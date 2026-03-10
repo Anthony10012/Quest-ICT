@@ -18,11 +18,11 @@ def add_user(pseudo):
     conn = get_connection()
     cursor = conn.cursor()
     try:
-        cursor.execute('INSERT INTO users (pseudo) VALUES (?)', (pseudo,))
+        cursor.execute('INSERT INTO users (pseudo,creation_date) VALUES (?,CURRENT_TIMESTAMP)', (pseudo,))
         conn.commit()
         return True
     except Exception as e:
-        print(f"Erreur : {e}")
+        print(f"Erreur lors de l'ajout de l'utilisateur : {e}")
         return False
     finally:
         conn.close()
