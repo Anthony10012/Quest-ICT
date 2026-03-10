@@ -41,7 +41,7 @@ def get_random_quiz(limit=8):
             "difficulty": question["difficulty"],
             "answers": answers,
           })
-          return quiz_data
+        return quiz_data
     except sqlite3.Error as e:
         print(f"Erreur lors de la génération du quiz : {e}")
         return []
