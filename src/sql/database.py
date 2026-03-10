@@ -1,7 +1,11 @@
 import sqlite3
+import os
 
 def get_connection():
-    return sqlite3.connect('../../database/quiz_db.sqlite')
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    root_dir = os.path.abspath(os.path.join(current_dir,"..",".."))
+    db_path = os.path.join(root_dir, "database","quiz_db.sqlite")
+    return sqlite3.connect(db_path)
 
 def check_user_exists(pseudo):
     conn = get_connection()
