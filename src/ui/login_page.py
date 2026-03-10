@@ -1,5 +1,6 @@
 import pygame
 import sys
+from src.sql.database import add_user,check_user_exists
 
 
 def run_login(screen):
@@ -45,6 +46,26 @@ def run_login(screen):
                 pygame.quit()
                 sys.exit()
 
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    pseudo_input = username.strip()
+
+                    if btn1_rect.collidepoint(event.pos):
+                        if len(pseudo_input) >= 3:
+                            if check_user_exists(pseudo_input):
+                                return pseudo_input
+                            else:
+                                error_msg = "Compte inexistant ! Créez-en un."
+                        else:
+                            error_msg = "Pseudo trop court !"
+                    elif btn2_rect.collidepoint(event.pos):
+                        if len(pseudo_input) >= 3:
+                            if add_user(pseudo_input):
+                                return pseudo_input
+                            else:
+                                error_msg = "Ce pseudo existe déjà"
+                        else:
+                            error_msg = "Pseudo trop court !"
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_BACKSPACE:
                     username = username[:-1]
