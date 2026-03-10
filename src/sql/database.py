@@ -11,4 +11,18 @@ def check_user_exists(pseudo):
     conn.close()
     return user is not None
 
+def add_user(pseudo):
+    if check_user_exists(pseudo):
+        return False
 
+    conn = get_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute('INSERT INTO users (pseudo) VALUES (?)', (pseudo,))
+        conn.commit()
+        return True
+    except Exception as e:
+        print(f"Erreur : {e}")
+        return False
+    finally:
+        conn.close()
