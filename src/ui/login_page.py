@@ -72,7 +72,7 @@ def run_login(screen):
                     error_msg = ""
                 elif event.key == pygame.K_RETURN:
                     if len(username.strip()) >= 3:
-                        return username.strip()  # <--- On renvoie le pseudo au main !
+                        return username.strip()  # <--- Return pseudo into main
                     error_msg = "Le pseudo doit contenir au moins 3 caractères"
                 elif event.unicode.isprintable() and len(username) < 20:
                     username += event.unicode
