@@ -1,6 +1,6 @@
 import pygame
 import sys
-
+from src.logic.quiz_engine import get_random_quiz
 def run_game_menu(screen):
     # --- Configuration ---
     WIDTH, HEIGHT = screen.get_size()
@@ -104,8 +104,16 @@ def run_game_menu(screen):
                 if selected_theme and selected_difficulty:
                     start_rect = pygame.Rect(WIDTH // 2 - 200, 780, 400, 80)
                     if start_rect.collidepoint(mouse_pos):
-                        # Returns the choices made
-                        return {"theme": selected_theme, "difficulty": selected_difficulty}
+                        print(f"Lancement du quiz : {selected_theme} - {selected_difficulty}")
+
+                        # Call function get_random_quiz
+                        quiz_questions = get_random_quiz(limit=8)
+
+                        return {
+                            "theme": selected_theme,
+                            "difficulty": selected_difficulty,
+                            "questions": quiz_questions
+                        }
 
         # --- Rendering ---
         screen.fill(BG_COLOR)

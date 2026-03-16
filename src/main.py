@@ -30,7 +30,9 @@ def main():
             if resultat == "MAIN_MENU":
                 current_state = "MAIN_MENU"
             elif isinstance(resultat,dict):
-                print(f"Lancement du quiz : {resultat}")
+
+                questions_quiz = resultat["questions"]
+                run_game_quiz(screen, questions_quiz)
                 current_state = "MAIN_MENU"
         elif current_state == "SCORES_STATS":
             action = run_statistics(screen,[])
