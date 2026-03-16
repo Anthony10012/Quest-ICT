@@ -129,15 +129,6 @@ def run_login(screen):
 
         btn2_text = font_button.render("+ CRÉER UN COMPTE", True, WHITE)
         screen.blit(btn2_text, btn2_text.get_rect(center=btn2_rect.center))
-
-        # --- Logic Clic ---
-        if pygame.mouse.get_pressed()[0]:
-            if is_hover1:
-                if len(username.strip()) >= 3:
-                    return username.strip()
-                error_msg = " Trop court !"
-            elif is_hover2:
-                print("Action : Créer un compte")
         draw_text_centered("Version 1.0 - Jeu interactif", font_subtitle, GRAY, 850)
 
         pygame.display.flip()
