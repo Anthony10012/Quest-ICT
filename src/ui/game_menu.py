@@ -1,7 +1,6 @@
 import pygame
 import sys
 
-
 def run_game_menu(screen):
     # --- Configuration ---
     WIDTH, HEIGHT = screen.get_size()
