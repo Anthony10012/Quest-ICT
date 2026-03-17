@@ -3,6 +3,7 @@ from ui.main_menu import MainMenu
 from ui.game_menu import run_game_menu
 from ui.score_statistics import run_statistics
 from ui.login_page import run_login
+from ui.game_quiz import run_game_quiz
 def main():
 
     pygame.init()

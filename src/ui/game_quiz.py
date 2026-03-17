@@ -1,7 +1,7 @@
 import pygame
 import sys
 
-def run_game_menu(screen,quiz_data):
+def run_game_quiz(screen,quiz_data):
     WIDTH, HEIGHT = screen.get_size()
     clock = pygame.time.Clock()
 
@@ -51,5 +51,21 @@ def run_game_menu(screen,quiz_data):
             screen.blit(txt,(180, 320 + i * 120))
             answers_rectangles.append((rectangle,answer["is_correct"]))
 
+        # --- Events ---
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
 
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                for rectangle, is_correct in answers_rectangles:
+                    if rectangle.collidepoint(event.pos):
+                        if is_correct:
+                            score += 1
+                        current_question_index += 1
+                        start_time = pygame.time.get_ticks()
+
+        pygame.display.flip()
+        clock.tick(60)
+    return score
 
