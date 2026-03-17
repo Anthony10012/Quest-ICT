@@ -104,10 +104,11 @@ def run_game_menu(screen):
                 if selected_theme and selected_difficulty:
                     start_rect = pygame.Rect(WIDTH // 2 - 200, 780, 400, 80)
                     if start_rect.collidepoint(mouse_pos):
+
                         print(f"Lancement du quiz : {selected_theme} - {selected_difficulty}")
 
                         # Call function get_random_quiz
-                        quiz_questions = get_random_quiz(limit=8)
+                        quiz_questions = get_random_quiz(theme=selected_theme,limit=8)
 
                         return {
                             "theme": selected_theme,
