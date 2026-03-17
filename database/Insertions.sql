@@ -63,8 +63,8 @@ VALUES
 ('Qui est considérée comme la toute première personne à avoir écrit un programme informatique au 19ème siècle ?','','difficile',3),
 ('Lequelle de ces composants est un router ?','','difficile',3),
 ('Lequelle de ces cables est de l''USB C ?','','difficile',3),
-('Lequelle de ces consoles est la plus vieille','','difficile',3),
-('Quel code est écrit en C# ','','difficile',3);
+('Lequelle de ces consoles est la plus vieille ? ','','difficile',3),
+('Quel code est écrit en C# ? ','','difficile',3);
 
 
 -- 3 Insertion des réponses
