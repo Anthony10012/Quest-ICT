@@ -3,7 +3,7 @@ import sqlite3
 import random
 
 
-def get_random_quiz(themes_id= None,limit=8):
+def get_random_quiz(themes_id= None,difficulty= None,limit=8):
     """
     Retrieves a quiz of 8 random questions with their respective answers.
     """
@@ -16,9 +16,9 @@ def get_random_quiz(themes_id= None,limit=8):
 
     try:
         # Select 8 questions at random
-        if themes_id:
-            query = "SELECT * FROM questions WHERE themes_id = ? ORDER BY RANDOM() LIMIT ?"
-            cursor.execute(query,(themes_id, limit))
+        if themes_id and difficulty:
+            query = "SELECT * FROM questions WHERE themes_id = ? AND difficulty = ?  ORDER BY RANDOM() LIMIT ?"
+            cursor.execute(query,(themes_id,difficulty, limit))
         else:
             return []
 
