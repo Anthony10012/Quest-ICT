@@ -108,7 +108,7 @@ def run_game_menu(screen):
                         print(f"Lancement du quiz : {selected_theme} - {selected_difficulty}")
 
                         # Call function get_random_quiz
-                        quiz_questions = get_random_quiz(themes_id=selected_theme,limit=8)
+                        quiz_questions = get_random_quiz(themes_id=selected_theme,difficulty=selected_difficulty,limit=8)
 
                         return {
                             "theme": selected_theme,
