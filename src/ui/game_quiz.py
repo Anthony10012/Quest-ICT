@@ -94,21 +94,28 @@ def run_game_quiz(screen,quiz_data):
             pygame.draw.rect(screen, (255, 255, 255, 30), rect, border_radius=20)
             pygame.draw.rect(screen, (255, 255, 255, 80), rect, width=2, border_radius=20)
 
-            # --- Loading and displaying the image ---
-            # On suppose que "response_text" contient le nom du fichier image (ex: "espagne.png")
-            img_path = os.path.join("assets", "images", answer["response_text"])
+            # ---  Loading from the database via image_path ---
+            # we retrieve the path store in  the Database (ex: "animals/lion.png")
+            db_image_path = answer.get("image_path")
 
-            try:
-                img = pygame.image.load(img_path).convert_alpha()
-                # To scale (here, approximately 80% of the map’s width)
-                img = pygame.transform.smoothscale(img, (380, 220))
-                img_rect = img.get_rect(center=rect.center)
-                screen.blit(img, img_rect)
-            except:
-                # If the image does not load, the default text is displayed
-                txt = font_info.render("Image manquante", True, WHITE)
+            if db_image_path:
+                current_dir = os.path.dirname(os.path.abspath(__file__))
+                project_root = os.path.abspath(os.path.join(current_dir,"..",".."))
+                full_img_path = os.path.join(project_root, "assets", "images", db_image_path)
+
+                try:
+                    img = pygame.image.load(full_img_path).convert_alpha()
+                    # Resizing
+                    img = pygame.transform.smoothscale(img, (card_w - 60, card_h - 100))
+                    img_rect = img.get_rect(center=rect.center)
+                    screen.blit(img, img_rect)
+                except Exception as e:
+                    # If the image cannot be found, the response text is displayed
+                    txt = font_btn.render(answer["response_text"], True, WHITE)
+                    screen.blit(txt, txt.get_rect(center=rect.center))
+            else:
+                txt = font_btn.render(answer["response_text"], True, WHITE)
                 screen.blit(txt, txt.get_rect(center=rect.center))
-
             answers_rectangles.append((rect, answer["is_correct"]))
 
 
