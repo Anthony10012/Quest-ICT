@@ -28,11 +28,19 @@ def get_random_quiz(themes_id= None,difficulty= None,limit=8):
         for question in questions:
           # For each question, retrieve its 4 answers
           cursor.execute("""
-                         SELECT response_text,image_path,is_correct
+                         SELECT  DISTINCT  response_text,image_path,is_correct
                          FROM answers
                          WHERE questions_id= ?
+                         LIMIT 4
                          """,(question["id"],))
-          answers = [dict(row) for row in cursor.fetchall()]
+          rows = cursor.fetchall()
+          answers = [dict(row) for row in rows]
+
+          # --- CLEANING OF PATHWAYS ---
+          # Remove ‘assets/images/’ if it is stored in the database to avoid path errors
+          for a in answers:
+              if a["image_path"]:
+                  a["image_path"] = a["image_path"].replace("assets/images/", "")
 
           # Shuffle the order of the answers
           random.shuffle(answers)
