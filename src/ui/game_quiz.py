@@ -1,123 +1,136 @@
 import pygame
 import sys
 import os
+import time
 
 
 def wrap_text(text, font, max_width):
     words = text.split(' ')
     lines = []
     current_line = []
-
     for word in words:
         test_line = ' '.join(current_line + [word])
-        size = font.size(test_line)
-        if size[0] <= max_width:
+        if font.size(test_line)[0] <= max_width:
             current_line.append(word)
         else:
             lines.append(' '.join(current_line))
             current_line = [word]
-
     lines.append(' '.join(current_line))
     return lines
-def run_game_quiz(screen,quiz_data):
+
+
+def run_game_quiz(screen, quiz_data):
     WIDTH, HEIGHT = screen.get_size()
     clock = pygame.time.Clock()
 
-    # Colors and Fonts
+    # --- Couleurs ---
     BG_COLOR = (66, 37, 112)
     WHITE = (255, 255, 255)
     YELLOW = (253, 224, 71)
+    GREEN = (34, 197, 94)
+    RED = (239, 68, 68)
+    CARD_BG = (255, 255, 255)
 
-    font_question = pygame.font.SysFont("Arial", 40, bold=True)
-    font_btn = pygame.font.SysFont("Arial", 30)
-    font_info = pygame.font.SysFont("Arial", 20, bold=True)
+    # --- Polices ---
+    font_question = pygame.font.SysFont("Arial", 45, bold=True)
+    font_btn = pygame.font.SysFont("Arial", 28, bold=True)
+    font_ui = pygame.font.SysFont("Arial", 24, bold=True)
+    font_explanation = pygame.font.SysFont("Arial", 22, italic=True)
 
-    #  Game Status
-    current_question_index = 0
+    # --- Game Status ---
+    current_idx = 0
     score = 0
-    time_limit = 20000 # 20 seconds
-    start_time = pygame.time.get_ticks()
+    start_time = time.time()
+    selected_answer = None
+    is_answered = False
+    time_per_question = []
 
-    while current_question_index < len(quiz_data):
-        question_data = quiz_data[current_question_index]
-        elapsed = pygame.time.get_ticks() - start_time
-        remaining = max(0, (time_limit - elapsed) // 1000)
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.abspath(os.path.join(script_dir, "..", ".."))
 
-        # if times is up
-        if elapsed > time_limit:
-            current_question_index += 1
-            start_time = pygame.time.get_ticks()
-            continue
+    while current_idx < len(quiz_data):
+        question = quiz_data[current_idx]
+        elapsed = int(time.time() - start_time) if not is_answered else elapsed
 
         screen.fill(BG_COLOR)
 
-        # --- Title and Infos  ---
-        info_text = f"{question_data.get('theme', 'QUIZ')} • {question_data.get('difficulty', 'NORMAL')}"
-        info_surf = font_info.render(info_text, True, YELLOW)
-        screen.blit(info_surf, (40, 30))
-
-        # --- Question with automatic line break ---
-        max_q_width = WIDTH - 100
-        question_lines = wrap_text(question_data["question"], font_question, max_q_width)
-
-        y_offset = 70
+        # ---Question ---
+        question_lines = wrap_text(question["question"], font_question, WIDTH - 100)
+        y_ptr = 160
         for line in question_lines:
-            line_surf = font_question.render(line, True, WHITE)
-            screen.blit(line_surf, (40, y_offset))
-            y_offset += 55  # Espace entre les lignes de texte
+            txt = font_question.render(line, True, WHITE)
+            screen.blit(txt, (50, y_ptr))
+            y_ptr += 55
 
-        # Ajuste le début de la grille des images selon le nombre de lignes
-        # Si la question est longue, start_y descend pour ne pas cacher les images
-        start_y = y_offset + 30
+        # --- Header (Timer & Score) ---
+        timer_txt = font_ui.render(f"Time :{elapsed}s", True, WHITE)
+        score_txt = font_ui.render(f"{score}/{len(quiz_data)}", True, WHITE)
+        screen.blit(timer_txt, (WIDTH - 150, 30))
+        screen.blit(score_txt, (WIDTH - 150, 70))
 
-        # Timer
-        timer_surface = font_question.render(f"Temps : {remaining}", True, WHITE)
-        screen.blit(timer_surface, (WIDTH - 250, 50))
 
-        # ---  Answers Grid ---
-        answers_rectangles = []
 
-        # Card dimensions
-        card_w, card_h = 450, 320
-        margin_x, margin_y = 40, 30
-        start_x = (WIDTH - (card_w * 2 + margin_x)) // 2
 
-        for i, answer in enumerate(question_data["answers"]):
-            col = i % 2
-            row = i // 2
+        # --- Answer Grid ---
+        answer_rects = []
+        card_w, card_h = 420, 280
+        start_x = (WIDTH - (card_w * 2 + 40)) // 2
+        start_y = y_ptr + 30
 
-            # Position of the background rectangle
-            rect = pygame.Rect(start_x + col * (card_w + margin_x),
-                               start_y + row * (card_h + margin_y),
-                               card_w, card_h)
-            # Card design
-            pygame.draw.rect(screen, (255, 255, 255, 30), rect, border_radius=20)
-            pygame.draw.rect(screen, (255, 255, 255, 80), rect, width=2, border_radius=20)
+        for i, answer in enumerate(question["answers"]):
+            col, row = i % 2, i // 2
+            r = pygame.Rect(start_x + col * (card_w + 40), start_y + row * (card_h + 30), card_w, card_h)
 
-            # ---  Loading from the database via image_path ---
-            # we retrieve the path store in  the Database (ex: "animals/lion.png")
-            db_image_path = answer.get("image_path")
+            # Color Logic
+            color = CARD_BG
+            if is_answered:
+                if answer["is_correct"]:
+                    color = GREEN
+                elif i == selected_answer:
+                    color = RED
 
-            if db_image_path:
-                current_dir = os.path.dirname(os.path.abspath(__file__))
-                project_root = os.path.abspath(os.path.join(current_dir,"..",".."))
-                full_img_path = os.path.join(project_root, "assets", "images", db_image_path)
+            pygame.draw.rect(screen, color, r, border_radius=15)
+            if i == selected_answer:
+                pygame.draw.rect(screen, WHITE, r, width=4, border_radius=15)
 
-                try:
-                    img = pygame.image.load(full_img_path).convert_alpha()
-                    # Resizing
-                    img = pygame.transform.smoothscale(img, (card_w - 60, card_h - 100))
-                    img_rect = img.get_rect(center=rect.center)
-                    screen.blit(img, img_rect)
-                except Exception as e:
-                    # If the image cannot be found, the response text is displayed
-                    txt = font_btn.render(answer["response_text"], True, WHITE)
-                    screen.blit(txt, txt.get_rect(center=rect.center))
-            else:
-                txt = font_btn.render(answer["response_text"], True, WHITE)
-                screen.blit(txt, txt.get_rect(center=rect.center))
-            answers_rectangles.append((rect, answer["is_correct"]))
+            # Image or text
+            image_drawn = False
+            if answer.get("image_path"):
+                path = os.path.normpath(os.path.join(project_root, "assets", "images", answer["image_path"]))
+                if os.path.exists(path):
+                    try:
+                        img = pygame.image.load(path).convert_alpha()
+                        img = pygame.transform.smoothscale(img, (card_w - 40, card_h - 60))
+                        screen.blit(img, img.get_rect(center=r.center))
+                        image_drawn = True
+                    except:
+                        pass
 
+            if not image_drawn or is_answered:
+                # On affiche le texte si pas d'image, ou par dessus si répondu pour aider
+                txt_color = (66, 37, 112) if color == WHITE else WHITE
+                txt = font_btn.render(answer["response_text"], True, txt_color)
+                screen.blit(txt, txt.get_rect(center=(r.centerx, r.bottom - 30 if image_drawn else r.centery)))
+
+            answer_rects.append((r, i))
+
+        # --- Explanation and button Suivant ---
+        if is_answered:
+            # Text Explanation
+            expl_lines = wrap_text(f"Note: {question.get('explanation', '')}", font_explanation, WIDTH - 100)
+            ey = start_y + (card_h * 2) + 40
+            for eline in expl_lines:
+                screen.blit(font_explanation.render(eline, True, YELLOW), (50, ey))
+                ey += 25
+
+            # Button Suivant
+            next_btn = pygame.Rect(WIDTH // 2 - 100, HEIGHT - 80, 200, 60)
+            pygame.draw.rect(screen, YELLOW, next_btn, border_radius=10)
+            label = "TERMINER" if current_idx == len(quiz_data) - 1 else "SUIVANT"
+            l_surf = font_btn.render(label, True, (0, 0, 0))
+            screen.blit(l_surf, l_surf.get_rect(center=next_btn.center))
+        else:
+            next_btn = pygame.Rect(0, 0, 0, 0)  # disabled
 
         # --- Events ---
         for event in pygame.event.get():
@@ -126,14 +139,21 @@ def run_game_quiz(screen,quiz_data):
                 sys.exit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                for rectangle, is_correct in answers_rectangles:
-                    if rectangle.collidepoint(event.pos):
-                        if is_correct:
-                            score += 1
-                        current_question_index += 1
-                        start_time = pygame.time.get_ticks()
+                if not is_answered:
+                    for r, i in answer_rects:
+                        if r.collidepoint(event.pos):
+                            selected_answer = i
+                            is_answered = True
+                            time_per_question.append(time.time() - start_time)
+                            if question["answers"][i]["is_correct"]:
+                                score += 1
+                elif next_btn.collidepoint(event.pos):
+                    current_idx += 1
+                    is_answered = False
+                    selected_answer = None
+                    start_time = time.time()
 
         pygame.display.flip()
         clock.tick(60)
-    return score
 
+    return {"score": score, "times": time_per_question}
