@@ -1,6 +1,24 @@
 import pygame
 import sys
+import os
 
+
+def wrap_text(text, font, max_width):
+    words = text.split(' ')
+    lines = []
+    current_line = []
+
+    for word in words:
+        test_line = ' '.join(current_line + [word])
+        size = font.size(test_line)
+        if size[0] <= max_width:
+            current_line.append(word)
+        else:
+            lines.append(' '.join(current_line))
+            current_line = [word]
+
+    lines.append(' '.join(current_line))
+    return lines
 def run_game_quiz(screen,quiz_data):
     WIDTH, HEIGHT = screen.get_size()
     clock = pygame.time.Clock()
@@ -8,11 +26,11 @@ def run_game_quiz(screen,quiz_data):
     # Colors and Fonts
     BG_COLOR = (66, 37, 112)
     WHITE = (255, 255, 255)
-    GREEN = (16, 185, 129)
-    RED = (239, 68, 68)
+    YELLOW = (253, 224, 71)
 
     font_question = pygame.font.SysFont("Arial", 40, bold=True)
     font_btn = pygame.font.SysFont("Arial", 30)
+    font_info = pygame.font.SysFont("Arial", 20, bold=True)
 
     #  Game Status
     current_question_index = 0
@@ -33,23 +51,66 @@ def run_game_quiz(screen,quiz_data):
 
         screen.fill(BG_COLOR)
 
-        # -- Drawing ---
-        # Text question
-        text_surface = font_question.render(question_data["question"], True, WHITE)
-        screen.blit(text_surface, (100,100))
+        # --- Title and Infos  ---
+        info_text = f"{question_data.get('theme', 'QUIZ')} • {question_data.get('difficulty', 'NORMAL')}"
+        info_surf = font_info.render(info_text, True, YELLOW)
+        screen.blit(info_surf, (40, 30))
+
+        # --- Question with automatic line break ---
+        max_q_width = WIDTH - 100
+        question_lines = wrap_text(question_data["question"], font_question, max_q_width)
+
+        y_offset = 70
+        for line in question_lines:
+            line_surf = font_question.render(line, True, WHITE)
+            screen.blit(line_surf, (40, y_offset))
+            y_offset += 55  # Espace entre les lignes de texte
+
+        # Ajuste le début de la grille des images selon le nombre de lignes
+        # Si la question est longue, start_y descend pour ne pas cacher les images
+        start_y = y_offset + 30
 
         # Timer
         timer_surface = font_question.render(f"Temps : {remaining}", True, WHITE)
         screen.blit(timer_surface, (WIDTH - 250, 50))
 
-        # Answers button
+        # ---  Answers Grid ---
         answers_rectangles = []
+
+        # Card dimensions
+        card_w, card_h = 450, 320
+        margin_x, margin_y = 40, 30
+        start_x = (WIDTH - (card_w * 2 + margin_x)) // 2
+
         for i, answer in enumerate(question_data["answers"]):
-            rectangle = pygame.Rect(150, 300 + i * 120, 900, 80)
-            pygame.draw.rect(screen,(255, 255, 255, 50), rectangle, border_radius=15)
-            txt = font_btn.render(answer["response_text"], True, WHITE)
-            screen.blit(txt,(180, 320 + i * 120))
-            answers_rectangles.append((rectangle,answer["is_correct"]))
+            col = i % 2
+            row = i // 2
+
+            # Position of the background rectangle
+            rect = pygame.Rect(start_x + col * (card_w + margin_x),
+                               start_y + row * (card_h + margin_y),
+                               card_w, card_h)
+            # Card design
+            pygame.draw.rect(screen, (255, 255, 255, 30), rect, border_radius=20)
+            pygame.draw.rect(screen, (255, 255, 255, 80), rect, width=2, border_radius=20)
+
+            # --- Loading and displaying the image ---
+            # On suppose que "response_text" contient le nom du fichier image (ex: "espagne.png")
+            img_path = os.path.join("assets", "images", answer["response_text"])
+
+            try:
+                img = pygame.image.load(img_path).convert_alpha()
+                # To scale (here, approximately 80% of the map’s width)
+                img = pygame.transform.smoothscale(img, (380, 220))
+                img_rect = img.get_rect(center=rect.center)
+                screen.blit(img, img_rect)
+            except:
+                # If the image does not load, the default text is displayed
+                txt = font_info.render("Image manquante", True, WHITE)
+                screen.blit(txt, txt.get_rect(center=rect.center))
+
+            answers_rectangles.append((rect, answer["is_correct"]))
+
 
         # --- Events ---
         for event in pygame.event.get():
