@@ -1,6 +1,14 @@
 """
+ Project name: Pré-TPI Quest-ICT
+ File : quiz_engine.py
+ description: A logic engine that manages the retrieval of questions and answers from the SQLite database.
+ Author : Anthony Simond
+ Date : 2026/03/10
+ last modified : 2026/03/23
+ Version : 1.1
 
 """
+
 import os.path
 import sqlite3
 import random
@@ -9,6 +17,22 @@ import random
 def get_random_quiz(themes_id= None,difficulty= None,limit=8):
     """
     Retrieves a quiz of 8 random questions with their respective answers.
+
+    Args:
+        themes_id (int, optional): the unique theme ID. Defaults to None.
+        difficulty (str, optional): the level of difficulty ("easy","medium","hard"). Defaults to None.
+        limit (int, optional): the number of questions to retrieve. Defaults to 8.
+
+    Returns:
+        list[dict]: A list of dictionaries. Each dictionary contains:
+            - “question” (str): The question text.
+            - “explanation” (str): The theoretical explanation.
+            - “answers” (list): A list of 4 dictionaries containing answers (text, image, correct answer).
+            - “themes_id” (int): The theme ID.
+            - “difficulty” (str): The difficulty level.
+
+        Note: Returns an empty list [] in the event of an error or if parameters are missing.
+
     """
     current_dir = os.path.dirname(os.path.abspath(__file__))
     root_dir = os.path.abspath(os.path.join(current_dir, "..",".."))

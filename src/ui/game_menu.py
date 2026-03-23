@@ -1,3 +1,13 @@
+"""
+ Project name: Pré-TPI Quest-ICT
+ File : game_menu.py
+ description:
+ Author : Anthony Simond
+ Date : 2026/
+ last modified : 2026/
+ Version : 1.1
+
+"""
 import pygame
 import sys
 from src.logic.quiz_engine import get_random_quiz

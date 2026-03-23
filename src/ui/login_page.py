@@ -1,3 +1,14 @@
+"""
+ Project name: Pré-TPI Quest-ICT
+ File : login_page.py
+ description:
+ Author : Anthony Simond
+ Date : 2026/
+ last modified : 2026/
+ Version : 1.1
+
+"""
+
 import pygame
 import sys
 from src.sql.database import add_user,check_user_exists
