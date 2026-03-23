@@ -40,17 +40,25 @@ def run_game_quiz(screen, quiz_data):
     # --- Game Status ---
     current_idx = 0
     score = 0
+
     start_time = time.time()
+    question_start_time = time.time()
+    total_pause_duration = 0
+    pause_start_time = 0
+
     selected_answer = None
     is_answered = False
     time_per_question = []
+    elapsed = 0
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.abspath(os.path.join(script_dir, "..", ".."))
 
     while current_idx < len(quiz_data):
         question = quiz_data[current_idx]
-        elapsed = int(time.time() - start_time) if not is_answered else elapsed
+
+        if not is_answered:
+            elapsed = int((time.time() - start_time) - total_pause_duration)
 
         screen.fill(BG_COLOR)
 
@@ -144,16 +152,19 @@ def run_game_quiz(screen, quiz_data):
                         if r.collidepoint(event.pos):
                             selected_answer = i
                             is_answered = True
-                            time_per_question.append(time.time() - start_time)
+                            pause_start_time = time.time()
+
+                            time_per_question.append(time.time() - start_time - total_pause_duration)
                             if question["answers"][i]["is_correct"]:
                                 score += 1
                 elif next_btn.collidepoint(event.pos):
                     current_idx += 1
                     is_answered = False
                     selected_answer = None
-                    start_time = time.time()
+                    duration_of_this_pause = time.time() - pause_start_time
+                    total_pause_duration += duration_of_this_pause
 
         pygame.display.flip()
         clock.tick(60)
 
-    return {"score": score, "times": time_per_question}
+    return {"score": score, "times": time_per_question, "total_time": elapsed}
