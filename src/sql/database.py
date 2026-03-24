@@ -12,12 +12,31 @@ import sqlite3
 import os
 
 def get_connection():
+    """
+    Establishes a connection to the project’s SQLite database.
+
+    Calculates the absolute path to the .sqlite file from the current directory
+    to ensure that the connection works regardless of where the script is run.
+
+    Returns:
+        sqlite3.Connection: An active connection object to the quiz_db.sqlite database.
+    """
     current_dir = os.path.dirname(os.path.abspath(__file__))
     root_dir = os.path.abspath(os.path.join(current_dir,"..",".."))
     db_path = os.path.join(root_dir, "database","quiz_db.sqlite")
     return sqlite3.connect(db_path)
 
 def check_user_exists(pseudo):
+    """
+    Checks whether a user already exists in the database.
+
+    Args:
+        pseudo (str): The username to search for in the “users” table.
+
+    Returns:
+        bool: True if the pseudo already exists, False otherwise.
+
+    """
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM users WHERE pseudo = ?', (pseudo,))
