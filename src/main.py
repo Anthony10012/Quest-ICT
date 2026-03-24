@@ -4,6 +4,9 @@ from ui.game_menu import run_game_menu
 from ui.score_statistics import run_statistics
 from ui.login_page import run_login
 from ui.game_quiz import run_game_quiz
+from sql.database import get_user_id_by_pseudo
+from sql.database import save_game_result
+from sql.database import get_user_stats
 def main():
 
     pygame.init()
@@ -13,7 +16,6 @@ def main():
     pseudo = run_login(screen)
     current_state = "MAIN_MENU"
     running = True
-    from sql.database import get_user_id_by_pseudo
     current_user_id = get_user_id_by_pseudo(pseudo)
 
 
@@ -43,7 +45,6 @@ def main():
 
                 stats_partie = run_game_quiz(screen,questions_quiz)
 
-                from sql.database import save_game_result
                 save_game_result(
                     users_id=current_user_id,
                     themes_id=theme_id,
@@ -52,7 +53,6 @@ def main():
                 )
                 current_state = "MAIN_MENU"
         elif current_state == "SCORES_STATS":
-            from sql.database import get_user_stats
             real_results = get_user_stats(current_user_id)
             action = run_statistics(screen, real_results)
             if action == "BACK":
