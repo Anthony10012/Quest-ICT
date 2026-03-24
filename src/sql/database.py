@@ -72,3 +72,18 @@ def add_user(pseudo):
         return False
     finally:
         conn.close()
+
+def save_game_result(users_id,themes_id,final_score,total_time):
+    """
+    Saves the result of a game in the "games" table.
+    :param users_id: The user's unique identifier (foreign key to the users table).
+    :type users_id: int
+    :param themes_id: The ID of the theme selected for the game (foreign key to the themes table).
+    :type themes_id: int
+    :param final_score: The number of points scored by the player
+    :type final_score: int
+    :param total_time: The total time taken to answer the questions, in seconds.
+    :type total_time: int
+    :return: True if the backup was successful, False if a database error occurred.
+    :rtype: bool
+    """
