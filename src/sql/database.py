@@ -26,6 +26,19 @@ def check_user_exists(pseudo):
     return user is not None
 
 def add_user(pseudo):
+    """
+    Adds a new user to the database.
+
+    Args:
+        pseudo (str): The username chosen by the user.
+
+    Returns:
+         bool:
+            True if the user has been added,
+            False if they already exist or if an error occurs.
+
+    """
+
     if check_user_exists(pseudo):
         return False
 
