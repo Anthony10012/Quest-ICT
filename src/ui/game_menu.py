@@ -26,9 +26,6 @@ def run_game_menu(screen):
         {"id": 1, "name": "ANIMAUX", "emoji": "🐾", "color": (16, 185, 129)},
         {"id": 2 , "name": "DRAPEAUX", "emoji": "🏁", "color": (59, 130, 246)},
         {"id": 3 , "name": "INFORMATIQUE", "emoji": "💻", "color": (139, 92, 246)},
-        {"id": 4, "name": "GEOGRAPHIE", "emoji": "🌍", "color": (6, 182, 212)},
-        {"id": 5 , "name": "HISTOIRE", "emoji": "📚", "color": (245, 158, 11)},
-        {"id": 6 , "name": "SCIENCES", "emoji": "🔬", "color": (236, 72, 153)},
     ]
     DIFFICULTIES = [
         {"id": "facile", "name": "FACILE", "color": (74, 222, 128)},
