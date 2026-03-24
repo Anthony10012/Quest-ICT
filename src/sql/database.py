@@ -87,3 +87,18 @@ def save_game_result(users_id,themes_id,final_score,total_time):
     :return: True if the backup was successful, False if a database error occurred.
     :rtype: bool
     """
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute(
+            """
+            INSERT INTO games (final_score,date_time,total_time,themes_id,users_id) 
+            VALUES (?,CURRENT_TIMESTAMP,?,?,?)
+            """, (final_score,total_time,themes_id,users_id))
+        conn.commit()
+    except Exception as e:
+        print(f"Erreur lors de la sauvegarde du score : {e}")
+    finally:
+        conn.close()
