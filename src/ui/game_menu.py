@@ -3,9 +3,9 @@
  File : game_menu.py
  description:
  Author : Anthony Simond
- Date : 2026/
- last modified : 2026/
- Version : 1.1
+ Date : 2026/03/02
+ last modified : 2026/03/02
+ Version : 1.0
 
 """
 import pygame

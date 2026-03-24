@@ -3,8 +3,8 @@
  File : main_menu.py
  description:
  Author : Anthony Simond
- Date : 2026/
- last modified : 2026/
+ Date : 2026/02/24
+ last modified : 2026/02/24
  Version : 1.1
 
 """

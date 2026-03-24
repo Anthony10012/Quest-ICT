@@ -3,8 +3,8 @@
  File : game:quiz.py
  description:
  Author : Anthony Simond
- Date : 2026/
- last modified : 2026/
+ Date : 2026/03/17
+ last modified : 2026/03/17
  Version : 1.1
 
 """

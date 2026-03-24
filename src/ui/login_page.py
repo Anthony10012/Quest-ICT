@@ -3,9 +3,9 @@
  File : login_page.py
  description:
  Author : Anthony Simond
- Date : 2026/
- last modified : 2026/
- Version : 1.1
+ Date : 2026/03/03
+ last modified : 2026/03/03
+ Version : 1.0
 
 """
 
