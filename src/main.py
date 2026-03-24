@@ -10,9 +10,12 @@ def main():
     screen = pygame.display.set_mode((1200, 900))
     pygame.display.set_caption("QUIZ ÉDUCATIF")
 
-    run_login(screen)
+    pseudo = run_login(screen)
     current_state = "MAIN_MENU"
     running = True
+    from sql.database import get_user_id_by_pseudo
+    current_user_id = get_user_id_by_pseudo(pseudo)
+
 
     menu = MainMenu(screen)
 
@@ -33,10 +36,25 @@ def main():
             elif isinstance(resultat,dict):
 
                 questions_quiz = resultat["questions"]
-                run_game_quiz(screen, questions_quiz)
+                if len(questions_quiz) > 0:
+                    theme_id = questions_quiz[0]["themes_id"]
+                else:
+                    theme_id = 1  # Value to default if empty
+
+                stats_partie = run_game_quiz(screen,questions_quiz)
+
+                from sql.database import save_game_result
+                save_game_result(
+                    users_id=current_user_id,
+                    themes_id=theme_id,
+                    final_score=stats_partie["score"],
+                    total_time=stats_partie["total_time"]
+                )
                 current_state = "MAIN_MENU"
         elif current_state == "SCORES_STATS":
-            action = run_statistics(screen,[])
+            from sql.database import get_user_stats
+            real_results = get_user_stats(current_user_id)
+            action = run_statistics(screen, real_results)
             if action == "BACK":
                 current_state = "MAIN_MENU"
             else:
