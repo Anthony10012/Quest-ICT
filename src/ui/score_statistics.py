@@ -52,17 +52,29 @@ def draw_text_centered(text, font, color, center_pos, surface=screen):
 
 
 def calculate_stats(data):
+    """
+    Calculates the average of the scores and the total time based on the data in the database.
+    :param data:A list of dictionaries, where each dictionary represents a game session
+                 and must contain the keys 'score', 'totalQuestions', and 'totalTime'.
+    :type data: list[dict]
+    :return: A tuple containing (average_score_percentage, average_time_per_game).
+    :rtype: tuple(float, float)
+    """
     totalGames = len(data)
     if totalGames == 0:
         return 0, 0
 
+    # Average score
     totalScorePerc = sum((r['score'] / r['totalQuestions']) * 100 for r in data)
     avgScore = totalScorePerc / totalGames
 
-    totalTime = sum(sum(r['timePerQuestion']) / len(r['timePerQuestion']) for r in data)
-    avgTime = totalTime / totalGames
+    # Average TOTAL time per game
+    totalTimeSum = sum(r['totalTime'] for r in data)
+    avgTime = totalTimeSum / totalGames
 
     return avgScore, avgTime
+
+
 def draw_back_button(mouse_pos):
     rect = pygame.Rect(30, 30, 150, 60)
     is_hovered = rect.collidepoint(mouse_pos)
