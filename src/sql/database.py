@@ -102,3 +102,50 @@ def save_game_result(users_id,themes_id,final_score,total_time):
         print(f"Erreur lors de la sauvegarde du score : {e}")
     finally:
         conn.close()
+
+
+def get_user_stats(users_id):
+    """
+    Retrieves the game history along with the theme name.
+    :param users_id: The user's unique identifier (foreign key to the users table).
+    """
+    conn = get_connection()
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    query = """
+            SELECT g.final_score, g.date_time, g.total_time, t.name as theme_name
+            FROM games g
+                     JOIN themes t ON g.themes_id = t.id
+            WHERE g.users_id = ?
+            ORDER BY g.date_time DESC \
+            """
+
+    cursor.execute(query, (users_id,))
+    rows = cursor.fetchall()
+    conn.close()
+
+    # We're converting the lines into a list of dictionaries for my interface
+    results = []
+    for row in rows:
+        results.append({
+            "theme": row['theme_name'],
+            "score": row['final_score'],
+            "totalQuestions": 5,  # À adapter selon ton 'limit' de questions
+            "totalTime": row['total_time'],
+            "date": row['date_time']
+        })
+    return results
+
+
+def get_user_id_by_pseudo(pseudo):
+    """
+    Retrieves a user's ID from their username.
+    :param pseudo: The username chosen by the user.
+    """
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT id FROM users WHERE pseudo = ?', (pseudo,))
+    row = cursor.fetchone()
+    conn.close()
+    return row[0] if row else None
