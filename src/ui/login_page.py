@@ -1,3 +1,14 @@
+"""
+ Project name: Pré-TPI Quest-ICT
+ File : login_page.py
+ description:
+ Author : Anthony Simond
+ Date : 2026/03/03
+ last modified : 2026/03/03
+ Version : 1.0
+
+"""
+
 import pygame
 import sys
 from src.sql.database import add_user,check_user_exists
@@ -72,7 +83,7 @@ def run_login(screen):
                     error_msg = ""
                 elif event.key == pygame.K_RETURN:
                     if len(username.strip()) >= 3:
-                        return username.strip()  # <--- On renvoie le pseudo au main !
+                        return username.strip()  # <--- Return pseudo into main
                     error_msg = "Le pseudo doit contenir au moins 3 caractères"
                 elif event.unicode.isprintable() and len(username) < 20:
                     username += event.unicode
@@ -129,15 +140,6 @@ def run_login(screen):
 
         btn2_text = font_button.render("+ CRÉER UN COMPTE", True, WHITE)
         screen.blit(btn2_text, btn2_text.get_rect(center=btn2_rect.center))
-
-        # --- Logic Clic ---
-        if pygame.mouse.get_pressed()[0]:
-            if is_hover1:
-                if len(username.strip()) >= 3:
-                    return username.strip()
-                error_msg = " Trop court !"
-            elif is_hover2:
-                print("Action : Créer un compte")
         draw_text_centered("Version 1.0 - Jeu interactif", font_subtitle, GRAY, 850)
 
         pygame.display.flip()

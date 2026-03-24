@@ -1,3 +1,14 @@
+"""
+ Project name: Pré-TPI Quest-ICT
+ File : add_questions.py
+ description:
+ Author : Anthony Simond
+ Date : 2026/03/04
+ last modified : 2026/03/04
+ Version : 1.0
+
+"""
+
 import pygame
 import sys
 

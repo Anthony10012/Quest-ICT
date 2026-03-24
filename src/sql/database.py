@@ -1,3 +1,13 @@
+"""
+ Project name: Pré-TPI Quest-ICT
+ File : database.py
+ description: Module for managing user data persistence (logging in, checking for existing profiles and adding new ones to the SQLite database).
+ Author : Anthony Simond
+ Date : 2026/03/10
+ last modified : 2026/03/10
+ Version : 1.1
+
+"""
 import sqlite3
 import os
 

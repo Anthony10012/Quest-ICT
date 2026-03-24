@@ -3,6 +3,7 @@ from ui.main_menu import MainMenu
 from ui.game_menu import run_game_menu
 from ui.score_statistics import run_statistics
 from ui.login_page import run_login
+from ui.game_quiz import run_game_quiz
 def main():
 
     pygame.init()
@@ -30,7 +31,9 @@ def main():
             if resultat == "MAIN_MENU":
                 current_state = "MAIN_MENU"
             elif isinstance(resultat,dict):
-                print(f"Lancement du quiz : {resultat}")
+
+                questions_quiz = resultat["questions"]
+                run_game_quiz(screen, questions_quiz)
                 current_state = "MAIN_MENU"
         elif current_state == "SCORES_STATS":
             action = run_statistics(screen,[])

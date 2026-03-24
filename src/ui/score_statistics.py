@@ -1,3 +1,13 @@
+"""
+ Project name: Pré-TPI Quest-ICT
+ File : score_statistics.py
+ description:
+ Author : Anthony Simond
+ Date : 2026/03/02
+ last modified : 2026/03/02
+ Version : 1.0
+
+"""
 import pygame
 import sys
 from datetime import datetime
