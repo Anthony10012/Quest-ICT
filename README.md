@@ -35,7 +35,7 @@ python main.py`
 
 2. Use the menu to choose between starting a Quiz or viewing your Statistics
 
-3. Answers the questions before time runs out!
+3. Answers the questions
 
 
 # 4.Technical Stack
