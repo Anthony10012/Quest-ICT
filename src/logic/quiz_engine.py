@@ -14,14 +14,14 @@ import sqlite3
 import random
 
 
-def get_random_quiz(themes_id= None,difficulty= None,limit=8):
+def get_random_quiz(themes_id= None,difficulty= None,limit=5):
     """
-    Retrieves a quiz of 8 random questions with their respective answers.
+    Retrieves a quiz of 5 random questions with their respective answers.
 
     Args:
         themes_id (int, optional): the unique theme ID. Defaults to None.
         difficulty (str, optional): the level of difficulty ("easy","medium","hard"). Defaults to None.
-        limit (int, optional): the number of questions to retrieve. Defaults to 8.
+        limit (int, optional): the number of questions to retrieve. Defaults to 5.
 
     Returns:
         list[dict]: A list of dictionaries. Each dictionary contains:
